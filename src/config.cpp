@@ -1,0 +1,56 @@
+/*
+ * config.cpp
+ *
+ *  Created on: Sept 30, 2025
+ *      Author: huba
+ */
+
+#include "config.h"
+#include "ds18b20_utils.h"
+
+// generate a new client id for everybody and a new device id and key for each device
+// const char* clientId = "3186a303-e07f-462e-bcf8-b4b85ede2a31";
+// const char* deviceId = "8bb94227-87b6-42d2-805f-1139ce885c34";
+// const char* apiKey = "5c28ccdf19d57c767aae7ffdb53a1f100df1332caa57b506704f877b037f0d94";
+
+// #ifdef USE_SSL
+// 	const char* MONITOR_URL = "https://monitor.zyra.ro";
+// #else
+// 	const char* MONITOR_URL = "http://192.168.1.28/monitor/pub";
+// 	// const char* BASE_URL = "http://fruzsi.no-ip.info:8000/monitor/pub";
+// #endif
+
+const char* ROOT_CA = R"(-----BEGIN CERTIFICATE-----
+MIIFNTCCBB2gAwIBAgISBmaT5nKKZ1H3ArdlId/wMgZOMA0GCSqGSIb3DQEBCwUA
+MDMxCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1MZXQncyBFbmNyeXB0MQwwCgYDVQQD
+EwNSMTEwHhcNMjUwODAzMTg0MTI2WhcNMjUxMTAxMTg0MTI1WjAUMRIwEAYDVQQD
+DAkqLnp5cmEucm8wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDKfd+Z
+EoPj56mg/qLikGKJ0SP3Ra4GjdXB+XgHKBmelZ1C0JiKsLLhymodcsl+jYWWM8LI
+PfD6EGrUro4a50h5+/agqhkmRxlMBvSxY4MHhdVIIAvnLcylBqx9vhp1btr0ifjX
+/QIma2TOalTLjruLO7ut2WldYLHr5enpNB7aY+0tPRBw0Tptz7249yh54xcuUZhI
+cuoWrppZ0vyvBn5xcForT2XqVVZ+5r2NOL3dHI7nLzYOnZz4Yv4jRL1R1yNjs/B9
+RYrBpl2Y0MuwPQ42v5fB/zvCWOJJtXJ49qX88aLEXzBk+R3YrB0ybgxZETPa2roB
+4sBocmKySBojLeffAgMBAAGjggJgMIICXDAOBgNVHQ8BAf8EBAMCBaAwHQYDVR0l
+BBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAwGA1UdEwEB/wQCMAAwHQYDVR0OBBYE
+FLwmM9R7aaoIg+HBn6l4AuuVig7qMB8GA1UdIwQYMBaAFMXPRqTq9MPAemyVxC2w
+XpIvJuO5MDMGCCsGAQUFBwEBBCcwJTAjBggrBgEFBQcwAoYXaHR0cDovL3IxMS5p
+LmxlbmNyLm9yZy8wXAYDVR0RBFUwU4IJKi56eXJhLnJvghJ3d3cuZWxpZ2h0Lnp5
+cmEucm+CE3d3dy5tb25pdG9yLnp5cmEucm+CFHd3dy5tb25pdG9yMi56eXJhLnJv
+ggd6eXJhLnJvMBMGA1UdIAQMMAowCAYGZ4EMAQIBMC4GA1UdHwQnMCUwI6AhoB+G
+HWh0dHA6Ly9yMTEuYy5sZW5jci5vcmcvNzkuY3JsMIIBAwYKKwYBBAHWeQIEAgSB
+9ASB8QDvAHYA7TxL1ugGwqSiAFfbyyTiOAHfUS/txIbFcA8g3bc+P+AAAAGYcXKn
+2wAABAMARzBFAiAyIkWz6fsxVeZ81kBMFTveQo1kSStxl/mE8/xQN0VOHQIhAOqS
+9ea7T1SzQh6UheQkdEhfnMY10dYPKuype5soNK0UAHUA3dzKNJXX4RYF55Uy+sef
++D0cUN/bADoUEnYKLKy7yCoAAAGYcXKoGgAABAMARjBEAiBIiIkhRkNAO7FNUKzs
+ccoG+DTIg1aIWIjHvEKUeEbOZgIgcJ8iLPGba0kMPIys3K31VWv6e12/4DwmlC6q
+52YWRsMwDQYJKoZIhvcNAQELBQADggEBAFTlR/AtsUp6TNEoavfIkvxo6t5CsGrP
+My+rIVqwFpJlDYk6tfdI/Ewcxi+9mCw42WXhdsxV77HkxI7her8lnU+hps0rdYv1
+ISD/pdAN7fbS/2cGq14xyQYJmIudRIDQVT0X581RKko1kFI+RWg/pC/GUKT5VDBb
+QLlB8dQmIHsAu/VLs4Ivc9V50+54nA5SatjHQr4ZEfwybyfrh9M6n8+qFEE7HWXF
+PTFHjgWa6kxk9veY3jXVjf3D9sqVeDxYlQ+As6wZxTEGUXTNq6k99T0r5yriKE1C
+vy+4YL4ovZrYyrel7kdzEsaYvx64kEm+FykWYkr5wuZ8xzvwCMaq3Jw=
+-----END CERTIFICATE-----)";
+
+TTemperatureSensor temperatureSensors[temperatureSensorsCount] = {
+  {false, "28fc1f56b5013c83", "haz", "270ed5d0-77d1-4e3b-afb0-d050ab258256", -1, 4, 90, false, 0}
+};

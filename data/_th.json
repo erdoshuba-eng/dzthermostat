@@ -1,0 +1,7 @@
+{
+	"name":"Termosztat",
+	"mode":"man",
+	"refTemp":17.0,
+	"sensibility":"050",
+	"forceOnDuration":1800
+}
