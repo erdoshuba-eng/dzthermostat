@@ -5,18 +5,16 @@
  *      Author: huba
  */
 
-#ifndef DZTERMOSTAT_CONFIG_H_
-#define DZTERMOSTAT_CONFIG_H_
-
-// #include "ds18b20_utils.h"
+#ifndef DZTHERMOSTAT_CONFIG_H_
+#define DZTHERMOSTAT_CONFIG_H_
 
 #define DEBUG_
 #define HAS_DISPLAY
 #define USE_SSL
+#define ENYEM
 
 // temperature sensors
-#define freqReadTemperature 15 // 15 seconds between two temperature reading operation
-// extern TTemperatureSensor temperatureSensors[];
+#define freqReadTemperature 8 // 8 seconds between two temperature reading operation
 #define temperatureSensorsCount 1
 
 // OneWire
@@ -26,4 +24,4 @@
 #define PIN_UP 14 // D5
 #define PIN_DOWN 12 // D6
 
-#endif /* DZTERMOSTAT_CONFIG_H_ */
+#endif /* DZTHERMOSTAT_CONFIG_H_ */

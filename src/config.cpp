@@ -8,18 +8,6 @@
 #include "config.h"
 #include "ds18b20_utils.h"
 
-// generate a new client id for everybody and a new device id and key for each device
-// const char* clientId = "3186a303-e07f-462e-bcf8-b4b85ede2a31";
-// const char* deviceId = "8bb94227-87b6-42d2-805f-1139ce885c34";
-// const char* apiKey = "5c28ccdf19d57c767aae7ffdb53a1f100df1332caa57b506704f877b037f0d94";
-
-// #ifdef USE_SSL
-// 	const char* MONITOR_URL = "https://monitor.zyra.ro";
-// #else
-// 	const char* MONITOR_URL = "http://192.168.1.28/monitor/pub";
-// 	// const char* BASE_URL = "http://fruzsi.no-ip.info:8000/monitor/pub";
-// #endif
-
 const char* ROOT_CA = R"(-----BEGIN CERTIFICATE-----
 MIIFNTCCBB2gAwIBAgISBmaT5nKKZ1H3ArdlId/wMgZOMA0GCSqGSIb3DQEBCwUA
 MDMxCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1MZXQncyBFbmNyeXB0MQwwCgYDVQQD
