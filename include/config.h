@@ -11,7 +11,7 @@
 #define DEBUG_
 #define HAS_DISPLAY
 #define USE_SSL
-#define ENYEM
+#define ENYEM_
 
 // temperature sensors
 #define freqReadTemperature 8 // 8 seconds between two temperature reading operation

@@ -669,7 +669,7 @@ void readTemperatures() {
 	DeviceAddress deviceAddress; // temperature sensor address
 	for (uint8_t i = 0; i < sensorsCount; i++) {
 		if (!dtSensors.getAddress(deviceAddress, i)) { continue; }
-		float temperature = dtSensors.getTempC(deviceAddress);
+		float temperature = dtSensors.getTempC(deviceAddress) - 2.5; // calibration offset
 		if (temperature == DEVICE_DISCONNECTED_C || temperature == 85.00) { continue; }
 		storeTemperature(deviceAddress, temperature);
 	}

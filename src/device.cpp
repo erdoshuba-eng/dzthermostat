@@ -6,6 +6,8 @@
 #include <LittleFS.h>
 
 #include "udp.h"
+#include <ESP8266HTTPClient.h>
+// #include "httpreq.h"
 // #include "logger.h"
 
 /**
@@ -268,14 +270,32 @@ JsonDocument TGate::getState2() const {
 	return doc;
 }
 
+String httpGet_(String url) {
+	WiFiClient client;
+	HTTPClient http;
+
+	http.begin(client, url);
+	int httpResponseCode = http.GET();
+	String body = httpResponseCode == 200 ? http.getString() : "";
+	http.end();
+	// if (body != "") { Logger::logln("get command " + body); }
+	return body;
+}
+
 void TGate::setRemoteOpen(bool bOpen) {
 	String newState = _config.isOpen ? "on" : "off";
-	String msg = "allDevices&cmd=setState&state=" + newState + "&device=" + _id;
-	sendUDPMessage(_config.ip, msg, _config.port);
+	// String msg = "allDevices&cmd=setState&state=" + newState + "&device=" + _id;
+	// sendUDPMessage(_config.ip, msg, _config.port);
+
+	// remote HTTP request
+	String url = "http://192.168.0.2/set?cmd=heating&state=" + newState;
+	// Serial.println(url);
+	String response = httpGet_(url);
+	// Serial.println(response);
 }
 
 void TGate::setOpen(bool bOpen, bool isForced) {
-	unsigned long now = millis();
+	// unsigned long now = millis();
 	// if (!isForced) {
 	// 	if ((now > _config.lastChange) && (now - _config.lastChange < 1000)) { return; }
 	// 	if (now < _config.lastChange) {
