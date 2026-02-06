@@ -25,10 +25,20 @@
 #include "udp.h"
 #include "httpreq.h"
 #ifdef HAS_DISPLAY
-	// #include "pcd8544_utils.h"
+	// #include "pcd8544_utils.h" // nokia 5110
 	// TPDC8544Display display;
-	#include "ssd1306_091.h"
+	#include "displ.h"
+	#ifdef SSD1306
 	SSD1306_091 display;
+	#endif
+	#ifdef LCD_28_TOUCH
+	#include "XPT2046_Touchscreen.h"
+
+	#define TOUCH_CS 4 // D2
+	LCD28Touch display;
+	XPT2046_Touchscreen ts(TOUCH_CS);
+	boolean wastouched = true;
+	#endif
 #endif
 
 extern const char* deviceId;
@@ -120,6 +130,19 @@ void setup() {
 		displEnabled = false;
 #ifdef DEBUG
     	Serial.println(F("SSD1306 allocation failed, display is disabled"));
+#endif
+	} else {
+#ifdef DEBUG
+		// display.diagnostics();
+#endif
+#ifdef LCD_28_TOUCH
+		if (ts.begin()) {
+  			ts.setRotation(0);
+		} else {
+#ifdef DEBUG
+    	Serial.println(F("Touch controller initialization failed"));
+#endif
+		}
 #endif
 	}
 #endif
@@ -641,6 +664,13 @@ void enableReadTemperature() {
 	canReadTemperature = true;
 }
 
+double tempWithPrecision(double temperature, uint8_t precision) {
+	char tmp[7];
+	const char* format = precision == 1 ? "%0.1f" : "%0.2f";
+	sprintf(tmp, format, temperature);
+	return atof(tmp);
+}
+
 /**
  * Read the temperature measured by the sensors
  */
@@ -658,6 +688,8 @@ void readTemperatures() {
 		enumTemperatureSensors(dtSensors);
 	}
 	if (!tempConversionPending) {
+		display.setIsReading(true);
+		updateDisplay();
 		dtSensors.requestTemperatures();
 		tempConversionStartMs = now;
 		tempConversionPending = true;
@@ -670,9 +702,11 @@ void readTemperatures() {
 	for (uint8_t i = 0; i < sensorsCount; i++) {
 		if (!dtSensors.getAddress(deviceAddress, i)) { continue; }
 		float temperature = dtSensors.getTempC(deviceAddress) - 2.5; // calibration offset
-		if (temperature == DEVICE_DISCONNECTED_C || temperature == 85.00) { continue; }
-		storeTemperature(deviceAddress, temperature);
+		if (temperature == DEVICE_DISCONNECTED_C) { continue; }
+		storeTemperature(deviceAddress, tempWithPrecision(temperature, 1)); // apply precision
 	}
+	display.setIsReading(false);
+	display.setTemperature(thermostat.getThermometer().getTemperature());
 	updateDisplay();
 	tempConversionPending = false;
 	canReadTemperature = false;
@@ -704,6 +738,30 @@ void initDevices() {
 }
 
 void detectButtonPress() {
+#ifdef LCD_28_TOUCH
+	bool istouched = ts.touched();
+	if (istouched) {
+		TS_Point p = ts.getPoint();
+		if (!wastouched) {
+// #ifdef DEBUG
+// 			Serial.print("Touch x = ");
+// 			Serial.print(p.x);
+// 			Serial.print(", y = ");
+// 			Serial.println(p.y);
+// #endif
+			if (2800 < p.x && p.x < 3500 && 2600 < p.y && p.y < 3600) {
+				thermostat.adjustRefTemperature(true);
+				updateDisplay();
+			}
+			if (2800 < p.x && p.x < 3500 && 500 < p.y && p.y < 1000) {
+				thermostat.adjustRefTemperature(false);
+				updateDisplay();
+			}
+		}
+	}
+	wastouched = istouched;
+#endif
+
 	if (digitalRead(PIN_UP) == HIGH && !btnUpPressed) {
 		btnUpPressed = true; // prevent multiple button press detection
 		thermostat.adjustRefTemperature(true);
@@ -739,8 +797,8 @@ void manageSystem() {
 
 void updateDisplay() {
 #ifdef HAS_DISPLAY
-	display.temperature = thermostat.getThermometer().getTemperature();
-	display.refTemp = thermostat.getRefTemperature();
+	// display.setTemperature(thermostat.getThermometer().getTemperature());
+	display.setRefTemp(thermostat.getRefTemperature());
 	display.wifiConnected = WiFi.status() == WL_CONNECTED;
 	display.needsHeating = thermostat.isOn();
 	display.wifiStrength = WiFi.RSSI();

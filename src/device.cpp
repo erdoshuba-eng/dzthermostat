@@ -614,26 +614,28 @@ bool TThermostat::detectChanges(String reportedState) {
 		}
 	}
 	// bool gateIsOpen = reportedState == "on"; // the gate commanded by the thermostat is open?
-	bool openGate = false;
+	bool openGate;
 	if (!_config.enabled || _config.mode.equalsIgnoreCase("off")) {
-		_config.isOn = false; // matches openGate = false, so it will not change
+		_config.isOn = true; // fake
+		openGate = false; // force off
 	} else if (_config.forceOn) {
 		openGate = true;
-		// _config.isOn = true;
 	} else {
 		float t = _thermometer.getTemperature();
+		openGate = _config.isOn;
 		if (t > 0) {
-			// the reference temperature depends on the current program
-			float refT = getRefTemperature();
-			if (t >= refT + getSensibility()) {
-				// _config.isOn = false; // switch off if the temperature is higher than the requested
-				openGate = false; // switch off if the temperature is higher than the requested
-			} else
-			if (t < refT - getSensibility()) {
-				// _config.isOn = true;
+			float refT = getRefTemperature(); // the reference temperature depends on the current program
+			if (!_config.isOn && t < refT) {
 				openGate = true;
 			}
-			// openGate = _config.isOn;
+			if (_config.isOn) {
+				if (t >= refT + getSensibility()) {
+					openGate = false; // switch off if the temperature is higher than the requested
+				} else
+				if (t < refT - getSensibility()) {
+					openGate = true;
+				}
+			}
 		}
 	}
 	if (_config.isOn != openGate) {

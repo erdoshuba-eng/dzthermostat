@@ -39,6 +39,12 @@ PTFHjgWa6kxk9veY3jXVjf3D9sqVeDxYlQ+As6wZxTEGUXTNq6k99T0r5yriKE1C
 vy+4YL4ovZrYyrel7kdzEsaYvx64kEm+FykWYkr5wuZ8xzvwCMaq3Jw=
 -----END CERTIFICATE-----)";
 
+#ifdef ENYEM
+TTemperatureSensor temperatureSensors[temperatureSensorsCount] = {
+  {false, "280a4356b5013cf7", "haz", "270ed5d0-77d1-4e3b-afb0-d050ab258256", -1, 4, 90, false, 0}
+};
+#else
 TTemperatureSensor temperatureSensors[temperatureSensorsCount] = {
   {false, "28fc1f56b5013c83", "haz", "270ed5d0-77d1-4e3b-afb0-d050ab258256", -1, 4, 90, false, 0}
 };
+#endif
