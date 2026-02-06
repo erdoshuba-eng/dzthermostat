@@ -22,7 +22,7 @@ String addressToStr(DeviceAddress addr);
 String enumTemperatureSensors(DallasTemperature &dtSensors);
 TTemperatureSensor getTemperatureSensor(uint8_t idx);
 uint8_t getTemperatureSensorsCount();
-JsonDocument getTempSensorState(TTemperatureSensor &ts);
+JsonDocument getTempSensorState(TTemperatureSensor &ts, uint8_t precision = 2);
 JsonDocument getTempSensorState(int idx);
 void storeTemperature(uint8_t idx, float value);
 void storeTemperature(DeviceAddress addr, float value);

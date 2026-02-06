@@ -45,14 +45,15 @@ uint8_t getTemperatureSensorsCount() {
 	return temperatureSensorsCount;
 }
 
-JsonDocument getTempSensorState(TTemperatureSensor &ts) {
+JsonDocument getTempSensorState(TTemperatureSensor &ts, uint8_t precision) {
 	JsonDocument doc;
 
 	doc["id"] = ts.sensorId;
 	doc["class"] = "temp";
 	// doc["data"]["name"] = ts.name;
 	char tmp[6];
-	sprintf(tmp, "%0.2f", ts.measuredValue);
+	const char* format = precision == 1 ? "%0.1f" : "%0.2f";
+	sprintf(tmp, format, ts.measuredValue);
 	doc["data"]["value"] = tmp;
 	doc["data"]["direction"] = ts.direction;
 	doc["data"]["min"] = ts.minValue;

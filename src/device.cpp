@@ -183,14 +183,7 @@ String TThermometer::getConfig() const {
  *   faster or slower
  */
 JsonDocument TThermometer::getState() const {
-	return getTempSensorState(*_tempSensor);
-	// char tmp[255];
-	// String resp = "{" + TDevice::getState();
-	// String t = R"(,"temperature":%0.1f,"critical":%s)";
-
-	// sprintf(tmp, t.c_str(), getTemperature(), b2s(getIsCritical()).c_str());
-	// resp += String(tmp) + "}";
-	// return resp;
+	return getTempSensorState(*_tempSensor, 1);
 }
 
 JsonDocument TThermometer::getState2() const {

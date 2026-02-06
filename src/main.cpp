@@ -664,13 +664,6 @@ void enableReadTemperature() {
 	canReadTemperature = true;
 }
 
-double tempWithPrecision(double temperature, uint8_t precision) {
-	char tmp[7];
-	const char* format = precision == 1 ? "%0.1f" : "%0.2f";
-	sprintf(tmp, format, temperature);
-	return atof(tmp);
-}
-
 /**
  * Read the temperature measured by the sensors
  */
@@ -703,7 +696,7 @@ void readTemperatures() {
 		if (!dtSensors.getAddress(deviceAddress, i)) { continue; }
 		float temperature = dtSensors.getTempC(deviceAddress) - 2.5; // calibration offset
 		if (temperature == DEVICE_DISCONNECTED_C) { continue; }
-		storeTemperature(deviceAddress, tempWithPrecision(temperature, 1)); // apply precision
+		storeTemperature(deviceAddress, temperature);
 	}
 	display.setIsReading(false);
 	display.setTemperature(thermostat.getThermometer().getTemperature());
